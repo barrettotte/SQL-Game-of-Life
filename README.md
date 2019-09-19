@@ -1,9 +1,15 @@
 # SQL-Game-of-Life
-Conway's Game of Life computed with only TSQL and drawn with a tiny bit of Python (matplotlib).
+Conway's Game of Life computed with TSQL and drawn with a bit of Python (matplotlib).
 
 
-It runs like complete trash, but performance wasn't the point of this.
+This runs like complete trash, but performance wasn't the point.
 I just wanted to see if I could get a glider to go across the screen using nothing but SQL generated data.
+
+
+**display.py** executes the stored procedure within **Game-of-Life.sql** to generate generations of Game of Life.
+
+
+**pygol.py** is for messing around with Game of Life and is not used
 
 
 ## References
