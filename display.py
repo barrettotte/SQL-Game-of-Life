@@ -9,10 +9,10 @@ def db_config():
 
 def draw(rows, size, gens):
     cells = dict()
-    for row in rows: cells[str(row[1]) + ',' + str(row[3]) + ',' + str(row[2])] = 'O'
+    for row in rows: cells[str(row[1]) + ',' + str(row[2]) + ',' + str(row[3])] = 'o'
     print('')
     for g in range(gens):
-        print(("-" * 64) + '\n' + "Generation: " + str(g))
+        print(("-" * (size*2)) + '\n' + "Generation: " + str(g))
         for i in range(size):
             s = ''
             for j in range(size):

@@ -20,8 +20,7 @@ Improvements:
 
 USE BARRETT_TEST
 GO
-
-EXEC [dbo].[GameOfLife_Run] 25,25,0,5;
+EXEC [dbo].[GameOfLife_Run] 10,10,0,5;
 
 */
 
@@ -66,9 +65,9 @@ BEGIN
 
 	IF @CurrentIteration = 0 BEGIN
 		-- Blinker --
-		UPDATE @AllGenerations SET Alive = 1 WHERE Generation = @CurrentIteration AND X = 1 AND Y = 0;
-		UPDATE @AllGenerations SET Alive = 1 WHERE Generation = @CurrentIteration AND X = 1 AND Y = 1;
-		UPDATE @AllGenerations SET Alive = 1 WHERE Generation = @CurrentIteration AND X = 1 AND Y = 2;
+		UPDATE @AllGenerations SET Alive = 1 WHERE Generation = @CurrentIteration AND X = 2 AND Y = 2;
+		UPDATE @AllGenerations SET Alive = 1 WHERE Generation = @CurrentIteration AND X = 3 AND Y = 2;
+		UPDATE @AllGenerations SET Alive = 1 WHERE Generation = @CurrentIteration AND X = 4 AND Y = 2;
 
 		-- Glider --
 		/*
@@ -98,13 +97,8 @@ BEGIN
 
 		-- Loop over each cell --
 		WHILE(@I < @SizeX) BEGIN
-			WHILE(@J < @SizeY) BEGIN
-				SET @IsAlive = (
-					SELECT Alive 
-					FROM @CurrentGeneration 
-					WHERE Generation = @CurrentIteration 
-					AND Id = @IdIter
-				);
+			WHILE(@J < @SizeY) BEGIN				
+
 				-- Find alive adjacent neighbor cells --
 				SET @NeighborCount = (
 					SELECT COUNT(*) AS NC 
@@ -122,18 +116,15 @@ BEGIN
 						)
 				);
 
-				-- Apply Game of Life rules --
+				-- Apply rules --
+				SET @IsAlive = 0;
 				BEGIN
-					IF @IsAlive = 0 AND @NeighborCount = 3
-						SET @IsAlive = 1;
-					ELSE IF (@IsAlive = 1 AND @NeighborCount < 2)
+					IF @IsAlive = 1 AND @NeighborCount < 2
 						SET @IsAlive = 0;
 					ELSE IF @IsAlive = 1 AND @NeighborCount > 3
 						SET @IsAlive = 0;
-					ELSE IF @IsAlive = 1 AND (@NeighborCount = 2 OR @NeighborCount = 3)
-						SET @IsAlive = 1;
-					ELSE
-						SET @IsAlive = 0;
+					ELSE IF @IsAlive = 0 AND @NeighborCount = 3
+						SET @IsAlive = 1;			
 				END;
 				UPDATE @CurrentGeneration SET Alive = @IsAlive WHERE Id = @IdIter;
 			
