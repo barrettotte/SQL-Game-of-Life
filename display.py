@@ -1,6 +1,7 @@
 # Execute Game of Life stored procedure and draw the results
 import pyodbc
 
+
 def db_config():
   return (";".join([
     "DRIVER={ODBC Driver 13 for SQL Server}", "SERVER=" + "BARRETT-MAIN\\BARRETTSQL",
@@ -20,7 +21,6 @@ def draw(rows, size, gens):
                 s += (cells[key] if (key in cells) else '.') + ' '
             print(s)
         
-
 def main():
   size = 10
   end = 5
