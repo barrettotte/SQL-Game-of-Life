@@ -26,7 +26,7 @@ def main():
   end = 5
   conn = pyodbc.connect(db_config())
   cursor = conn.cursor()
-  cursor.execute("{CALL [dbo].[GameOfLife_Run] (?,?,?,?)}", (size, size, 0, end))
+  cursor.execute("{CALL [dbo].[GameOfLife_Run] (?,?)}", (size, end))
   draw(cursor.fetchall(), size, end)
 
 if __name__=='__main__': main()
