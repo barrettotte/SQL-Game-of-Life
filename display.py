@@ -7,17 +7,11 @@ def db_config():
     "DATABASE=" + "BARRETT_TEST", "Trusted_Connection=yes"
   ])) + ";"
 
-def main():
-  size = 25
-  end = 10
+def draw_generations(rows, size, start, end):
   cells = dict()
-  colorama.init()
-  conn = pyodbc.connect(db_config())
-  rows = conn.cursor().execute("{CALL [dbo].[GameOfLife] (?,?)}", (size, end)).fetchall()
-
   for row in rows: 
     cells["{0};{1};{2}".format(row[0], row[1], row[2])] = 'X'
-  for g in range(end+1):
+  for g in range(start, end+1):
     s = "\rGeneration:  {0}\n".format(g)
     for i in range(size):
       for j in range(size):
@@ -26,6 +20,23 @@ def main():
       s += '\n'
     sys.stdout.write("\x1b[{0}A".format(size+1) + s)
     sys.stdout.flush()
-    time.sleep(1.0)
+    time.sleep(0.50)
+
+def main():
+  size = 25
+  start = 0
+  total = 50
+  batch_size = 10
   
+  colorama.init()
+  conn = pyodbc.connect(db_config())
+  rows = []
+
+  for i in range(0, total // batch_size):
+    rows += conn.cursor().execute(
+      "{CALL [dbo].[GameOfLife] (?,?,?)}", size, i * batch_size, (i+1) * batch_size
+    ).fetchall()
+  draw_generations(rows, size, start, total)
+
+
 if __name__=='__main__': main()
