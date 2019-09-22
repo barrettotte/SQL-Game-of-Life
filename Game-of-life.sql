@@ -46,10 +46,10 @@ BEGIN
 
 		-- Seed Generation 0 with all dead cells --
 		BEGIN
-			SET @J = 0;
-			WHILE(@J < @Size) BEGIN
-				SET @I = 0;
-				WHILE(@I < @Size) BEGIN
+			SET @J = 1;
+			WHILE(@J <= @Size) BEGIN
+				SET @I = 1;
+				WHILE(@I <= @Size) BEGIN
 					INSERT INTO @AllGenerations (Generation, X, Y, Alive) VALUES (0, @J, @I, 0);
 					SET @I = @I + 1;
 				END;
@@ -76,17 +76,17 @@ BEGIN
 
 	-- Loop over each cell of each generation --
 	WHILE(@CurrentIteration <= @EndIteration) BEGIN
-		SET @J = 0;
-		WHILE(@J < @Size) BEGIN
-			SET @I = 0;
-			WHILE(@I < @Size) BEGIN
+		SET @J = 1;
+		WHILE(@J <= @Size) BEGIN
+			SET @I = 1;
+			WHILE(@I <= @Size) BEGIN
 				
 				-- Init cell state from previous generation --
 				SET @IsAlive = (SELECT Alive 
 					FROM @AllGenerations
-					WHERE X = @J
-						AND Y = @I
-						AND Generation = @CurrentIteration - 1
+					WHERE (X = @J % @Size)
+						AND (Y = @I % @Size)
+						AND (Generation = @CurrentIteration - 1)
 				);
 
 				-- Find alive adjacent neighbor cells --
@@ -134,8 +134,7 @@ BEGIN
 
 	INSERT INTO [dbo].[GameOfLife_Data] (Generation, X, Y, Alive)
 		SELECT Generation, X, Y, Alive
-		FROM @AllGenerations
-		--WHERE Alive = 1;
+		FROM @AllGenerations;
 
 	SELECT * FROM @AllGenerations
 		WHERE Alive = 1;

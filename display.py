@@ -25,13 +25,13 @@ def draw_generations(rows, size, start, end):
 def main():
   size = 25
   start = 0
-  total = 50
+  total = 100
   batch_size = 10
-  
+
   colorama.init()
   conn = pyodbc.connect(db_config())
   rows = []
-
+  print("Fetching generations...")
   for i in range(0, total // batch_size):
     rows += conn.cursor().execute(
       "{CALL [dbo].[GameOfLife] (?,?,?)}", size, i * batch_size, (i+1) * batch_size
