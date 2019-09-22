@@ -2,12 +2,16 @@
 Conway's Game of Life computed with TSQL and animated in console with a bit of Python.
 
 
+[![demo](demo.gif)](demo.gif)
+
+
 This runs like complete trash, but performance wasn't the point.
 I just wanted to see if I could get a glider to go across the screen using nothing but SQL generated data.
 
 
 **display.py** executes the stored procedure within **Game-of-Life.sql** to generate generations of Game of Life
 and animate the results.
+
 
 
 ## References
