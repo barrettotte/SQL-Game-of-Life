@@ -15,7 +15,6 @@ and animate the results.
 
 
 ## References
-* Curses module https://www.devdungeon.com/content/curses-windows-python
 * http://www.paleotechnologist.net/wp-content/uploads/2010/10/glider.png
 * Conway's Game of Life https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 * Python test implementation https://nostarch.com/download/samples/PythonPlayground_sampleCh3.pdf
