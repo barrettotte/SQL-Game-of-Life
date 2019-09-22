@@ -1,5 +1,5 @@
 # Execute Game of Life stored procedure and draw the results
-import pyodbc
+import pyodbc, sys, time, colorama
 
 def db_config():
   return (";".join([
@@ -7,26 +7,25 @@ def db_config():
     "DATABASE=" + "BARRETT_TEST", "Trusted_Connection=yes"
   ])) + ";"
 
-def draw(rows, size, gens):
-    cells = dict()
-    for row in rows:
-      cells[str(row[0]) + ',' + str(row[1]) + ',' + str(row[2])] = 'O' # str(row[4])
-    print('')
-    for g in range(gens+1):
-        print(("-" * (size*2)) + '\n' + "Generation: " + str(g))
-        for i in range(size):
-            s = ''
-            for j in range(size):
-                key = str(g) + ',' + str(i) + ',' + str(j)
-                s += (cells[key] if (key in cells) else '.') + ' '
-            print(s)
-        
 def main():
   size = 25
   end = 10
+  cells = dict()
+  colorama.init()
   conn = pyodbc.connect(db_config())
-  cursor = conn.cursor()
-  cursor.execute("{CALL [dbo].[GameOfLife_Run] (?,?)}", (size, end))
-  draw(cursor.fetchall(), size, end)
+  rows = conn.cursor().execute("{CALL [dbo].[GameOfLife] (?,?)}", (size, end)).fetchall()
 
+  for row in rows: 
+    cells["{0};{1};{2}".format(row[0], row[1], row[2])] = 'X'
+  for g in range(end+1):
+    s = "\rGeneration:  {0}\n".format(g)
+    for i in range(size):
+      for j in range(size):
+        key = "{0};{1};{2}".format(g, i, j)
+        s += (cells[key] if (key in cells) else '.') + ' '
+      s += '\n'
+    sys.stdout.write("\x1b[{0}A".format(size+1) + s)
+    sys.stdout.flush()
+    time.sleep(1.0)
+  
 if __name__=='__main__': main()

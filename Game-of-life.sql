@@ -10,7 +10,7 @@ https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 USE BARRETT_TEST
 GO
 
-CREATE OR ALTER PROCEDURE [dbo].[GameOfLife_Run](
+CREATE OR ALTER PROCEDURE [dbo].[GameOfLife](
 	@Size           INT,
 	@Iterations     INT
 )
@@ -124,5 +124,5 @@ BEGIN
 END;
 
 
--- EXEC [dbo].[GameOfLife_Run] 25,5;
+-- EXEC [dbo].[GameOfLife] 25,5;
 
