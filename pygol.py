@@ -13,10 +13,16 @@ def update(frameNum, img, grid, N):
     newGrid = grid.copy()
     for i in range(N):
         for j in range(N):
-            total = int((grid[i, (j-1)%N] + grid[i, (j+1)%N] + 
-                         grid[(i-1)%N, j] + grid[(i+1)%N, j] + 
-                         grid[(i-1)%N, (j-1)%N] + grid[(i-1)%N, (j+1)%N] + 
-                         grid[(i+1)%N, (j-1)%N] + grid[(i+1)%N, (j+1)%N])/255)
+            total = int((
+                grid[i, (j-1)%N] + 
+                grid[i, (j+1)%N] + 
+                grid[(i-1)%N, j] + 
+                grid[(i+1)%N, j] + 
+                grid[(i-1)%N, (j-1)%N] + 
+                grid[(i-1)%N, (j+1)%N] + 
+                grid[(i+1)%N, (j-1)%N] + 
+                grid[(i+1)%N, (j+1)%N]
+            )/255)
             if grid[i, j]  == 255:
                 if (total < 2) or (total > 3):
                     newGrid[i, j] = 0
@@ -29,7 +35,7 @@ def update(frameNum, img, grid, N):
 
 def main():
     N = 25
-    updateInterval = 250
+    updateInterval = 10000
     grid = np.array([])
     grid = np.zeros(N*N).reshape(N, N)
     addGlider(1, 1, grid)
